@@ -1,4 +1,7 @@
-After install windows, 
+# Setup guide for Small Models Training
+## Install Windows
+<TBD>
+
 ## Setup basic tools
 1. VSCode https://code.visualstudio.com/docs/?dv=win64user
 
