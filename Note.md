@@ -1,4 +1,3 @@
-# Setup Notes
 After install windows, 
 ## Setup basic tools
 1. VSCode https://code.visualstudio.com/docs/?dv=win64user
@@ -38,6 +37,13 @@ I got 2.8.0.dev20250625+cu128 on June 25
 
 8. Open Nvidia Control Panel and check version of the driver
 (572.84)
+
+9. Install claude code (Optional)
+```
+sudo apt install nodejs
+sudo apt install npm
+sudo npm install -g @anthropic-ai/claude-code
+```
 
 ## Test the setup for finetuning
 1. Create requirements.txt file
@@ -79,5 +85,3 @@ print("models output: %s" % baseline_answer)
 
 ```
 it should output something without error
-
-
