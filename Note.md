@@ -1,30 +1,54 @@
-# Setup notes
+# Setup Notes
+After install windows, 
+## Setup basic tools
+1. VSCode https://code.visualstudio.com/docs/?dv=win64user
 
-1. Install WSL 
+2. Enable WSL https://learn.microsoft.com/en-us/windows/wsl/install
+A. Make sure to enable "Windows subsystem for Linux" (Go to Turn Windows Features On or Off)
+B. We would just use the default one when running "wsl --install"
+C. When prompt, create user: firstfloortech , password: <your password here>
 
-2. Setup virtual env 
+3. Install LMStudio (Optional) - Or install Ollama + Openwebui
+4. Install Git (Optional)
+https://learn.microsoft.com/en-us/windows/wsl/tutorials/wsl-git
+```
+sudo apt-get install git
 
-3. Fresh PyTorch pip install --upgrade --force-reinstall torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu128
-Make sure version is 2.8.0 
+```
+5. Setup up python - version 3.12.3 (default from Ubuntu)
+
+6. Setup virtual env
+```
+sudo apt update
+sudo apt install python3-venv
+python3 -m venv finetune-env
+source finetune-env/bin/activate
+```
+7. Install Pytorch
+```
+pip install --upgrade --force-reinstall torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu128
+```
+Check version:
+Run the following python script
 ```
 import torch
 print(torch.__version__)
 ```
+I got 2.8.0.dev20250625+cu128 on June 25
 
-4. System restart after PyTorch install
+8. Open Nvidia Control Panel and check version of the driver
+(572.84)
 
-5. NVIDIA driver version: Make sure you're on 535+ drivers.
-
-6. Test
-requirements.txt
-```python
+## Test the setup for finetuning
+1. Create requirements.txt file
+```
 transformers>=4.52.4
 datasets
 accelerate>=1.8.1
 ```
-
-Test files:
-```python
+2. Create simple test to make sure we would load the model and use it.
+test-finetune.py
+```
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import torch
 print(torch.__version__)
@@ -54,3 +78,6 @@ baseline_answer = tokenizer.decode(output_ids[0][inputs['input_ids'].shape[1]:],
 print("models output: %s" % baseline_answer)
 
 ```
+it should output something without error
+
+
