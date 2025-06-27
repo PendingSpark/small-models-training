@@ -4,30 +4,29 @@
 <TBD>
 
 ## Setup basic tools
-1. VSCode https://code.visualstudio.com/docs/?dv=win64user
-
-2. Enable WSL https://learn.microsoft.com/en-us/windows/wsl/install
+1. Enable WSL https://learn.microsoft.com/en-us/windows/wsl/install
 A. Make sure to enable "Windows subsystem for Linux" (Go to Turn Windows Features On or Off)
 B. We would just use the default one when running "wsl --install"
 C. When prompt, create user: firstfloortech , password: <your password here>
 
-3. Install LMStudio (Optional) - Or install Ollama + Openwebui
-4. Install Git (Optional)
+2. Install LMStudio (Optional) - Or install Ollama + Openwebui
+
+3. Install Git (Optional)
 https://learn.microsoft.com/en-us/windows/wsl/tutorials/wsl-git
 ```
 sudo apt-get install git
 
 ```
-5. Setup up python - version 3.12.3 (default from Ubuntu)
+4. Setup up python - version 3.12.3 (default from Ubuntu)
 
-6. Setup virtual env
+5. Setup virtual env
 ```
 sudo apt update
 sudo apt install python3-venv
 python3 -m venv finetune-env
 source finetune-env/bin/activate
 ```
-7. Install Pytorch
+6. Install Pytorch
 ```
 pip install --upgrade --force-reinstall torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu128
 ```
@@ -39,8 +38,14 @@ print(torch.__version__)
 ```
 I got 2.8.0.dev20250625+cu128 on June 25
 
-8. Open Nvidia Control Panel and check version of the driver
+7. Open Nvidia Control Panel and check version of the driver
 (572.84)
+
+8. VSCode https://code.visualstudio.com/docs/?dv=win64user
+a. Install python extension
+b. install WSL extension 
+c. Python Debugger extension
+d. Select the right virtual environment
 
 9. Install claude code (Optional)
 ```
