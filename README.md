@@ -26,6 +26,7 @@ sudo apt install python3-venv
 python3 -m venv finetune-env
 source finetune-env/bin/activate
 ```
+
 6. Install Pytorch
 ```
 pip install --upgrade --force-reinstall torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu128
@@ -41,13 +42,14 @@ I got 2.8.0.dev20250625+cu128 on June 25
 7. Open Nvidia Control Panel and check version of the driver
 (572.84)
 
-8. VSCode https://code.visualstudio.com/docs/?dv=win64user
-a. Install python extension
-b. install WSL extension 
-c. Python Debugger extension
-d. Select the right virtual environment
+8. VSCode
+https://code.visualstudio.com/docs/?dv=win64user
+* Install python extension
+* install WSL extension 
+* Python Debugger extension
+* Select the right virtual environment
 
-9. Install claude code (Optional)
+10. Install claude code (Optional)
 ```
 sudo apt install nodejs
 sudo apt install npm
