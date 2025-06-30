@@ -27,7 +27,7 @@ inputs = tokenizer(prompt_text, return_tensors="pt").to(model.device)
 # Generate a response
 output_ids = model.generate(**inputs, max_new_tokens=50)
 baseline_answer = tokenizer.decode(output_ids[0][inputs['input_ids'].shape[1]:], skip_special_tokens=True)
-print("models output: %s" % baseline_answer)
+print("baseline model output: %s" % baseline_answer)
 print("========= End model test run =========")
 
 # Training data = The actual samples/examples used to train the model (in this case: 500 samples)
@@ -126,16 +126,18 @@ data_collator = SFTDataCollator()
 
 training_args = TrainingArguments(
     output_dir="qwen_sft_demo",
-    overwrite_output_dir=True,
+    overwrite_output_dir=False,       # Don't overwrite - resume from checkpoint if exists
     num_train_epochs=1,
     per_device_train_batch_size=2,    # use batch size 2 per GPU
     gradient_accumulation_steps=1,    # no grad accumulation (since batch 2 is fine)
     logging_steps=20,                 # log every 20 steps
-    save_steps=0,                     # no checkpoints (not needed for demo)
+    save_steps=250,                   # Save checkpoint every 250 steps
+    save_total_limit=2,               # Keep only 2 checkpoints
     report_to=[],                     # no W&B or HF logging
     bf16=True,                        # Qwen3 is using bf16 training
     disable_tqdm=False,               # ← re-enable tqdm bars
     remove_unused_columns=False,      # <— keep extra columns like prompt_len
+    resume_from_checkpoint=True,      # Resume from last checkpoint if exists
 )
 
 trainer = Trainer(
@@ -148,6 +150,12 @@ trainer = Trainer(
 print("========= Start training run =========")
 trainer.train()
 print("========= End training run =========")
+
+# Save the fine-tuned model
+print("========= Saving fine-tuned model =========")
+model.save_pretrained("./fine-tuned-qwen")
+tokenizer.save_pretrained("./fine-tuned-qwen")
+print("Model saved to ./fine-tuned-qwen")
 
 
 # Sample output of trainer run
@@ -196,10 +204,10 @@ print("========= End training run =========")
 # epoch: This tells you how many times the model has seen the entire training dataset. You've completed one full epoch.
 # train_loss (at the end): The value 1.149... is the average loss over the entire training run for this epoch.
 
-# Prepare a user prompt for the baseline model after training
+# Test the fine-tuned model
 content = "how are you"
 messages = [{"role": "user", "content": content}]
-# Use Qwen's chat template to format the prompt (no fine-tuning applied yet)
+# Use Qwen's chat template to format the prompt
 # By setting enable_thinking equal to False, it add <think>\n</think> token to tell the model that the thinking is end.
 prompt_text = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True, enable_thinking=False)
 print("prompt text is: %s" % prompt_text)
@@ -207,5 +215,5 @@ print("prompt text is: %s" % prompt_text)
 inputs = tokenizer(prompt_text, return_tensors="pt").to(model.device)
 # Generate a response
 output_ids = model.generate(**inputs, max_new_tokens=50)
-baseline_answer = tokenizer.decode(output_ids[0][inputs['input_ids'].shape[1]:], skip_special_tokens=True)
-print("models output: %s" % baseline_answer)
+finetuned_answer = tokenizer.decode(output_ids[0][inputs['input_ids'].shape[1]:], skip_special_tokens=True)
+print("fine-tuned model output: %s" % finetuned_answer)
